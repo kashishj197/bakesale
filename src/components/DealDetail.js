@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import convertPrice from '../util';
 import ajax from '../ajax';
 
-import {Image, View, StyleSheet, Text} from 'react-native';
+import {Image, View, StyleSheet, TouchableOpacity, Text} from 'react-native';
 
 export default class DealDetail extends Component {
   static propTypes = {
     initialDeal: PropTypes.object.isRequired,
+    onBack: PropTypes.func.isRequired,
   }
   state = {
     deal: this.props.initialDeal,
@@ -23,19 +24,30 @@ export default class DealDetail extends Component {
     const { deal } = this.state;
     return (
       <View style={styles.deal}>
+        <TouchableOpacity onPress={this.props.onBack}>
+          <Text style={styles.backLink}>Back</Text>
+        </TouchableOpacity>
         <Image style={styles.itemImage} source={{uri: deal.media[0]}}/>
-        <View style={styles.info}>
-          <Text style={styles.title}>{deal.title}</Text>
+        <View style={styles.detail}>
+          <View>
+            <Text style={styles.title}>{deal.title}</Text>
+          </View>
           <View style={styles.footer}>
-            <Text style={styles.cause}>{deal.cause.name}</Text>
-            <Text style={styles.price}>{convertPrice(deal.price)}</Text>
+            <View style={styles.info}>
+              <Text style={styles.price}>{convertPrice(deal.price)}</Text>
+              <Text style={styles.cause}>{deal.cause.name}</Text>
+            </View>
+            { deal.user && (
+              <View style={styles.userInfo}>
+                <Image style={ styles.userAvatar } source={{uri: deal.user.avatar}} />
+                <Text>{deal.user.name}</Text>
+              </View> 
+            )}
+          </View>
+          <View style={styles.description}>
+            <Text>{deal.description}</Text>
           </View>
         </View>
-        { deal.user && <View style={styles.userInfo}>
-          <Image style={ styles.userAvatar } source={{uri: deal.user.avatar}} />
-          <Text>{deal.user.name}</Text>
-        </View> }
-        <Text>{deal.description}</Text>
       </View>
     )
   }
@@ -44,7 +56,15 @@ export default class DealDetail extends Component {
 const styles = StyleSheet.create({
   deal: {
     marginHorizontal: 12,
-    marginTop: 12,
+    marginTop: 30,
+  },
+  detail: {
+    borderColor: '#bbb',
+    borderWidth: 1,
+  },
+  backLink: {
+    marginBottom: 5,
+    color: 'blue',
   },
   itemImage: {
     width: '100%',
@@ -53,28 +73,39 @@ const styles = StyleSheet.create({
   },
   info: {
     padding: 10,
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderColor: '#bbb',
-    backgroundColor: '#fff',
+    alignItems: 'center',
   },
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 5,
+    padding: 10,
+    backgroundColor: 'rgba(237,149,45,0.4)'
   },
   footer: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 15,
   },
   cause: {
-    flex: 2,
+    flex: 1,
   },
   price: {
     flex: 1,
     textAlign: 'right',
+    fontWeight: 'bold',
+  },
+  userInfo: {
+    alignItems: 'center',
   },
   userAvatar: {
+    borderRadius: 100,
     width: 60,
     height: 60,
-  }
+  },
+  description: {
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

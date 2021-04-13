@@ -17,5 +17,14 @@ export default {
     } catch(e) {
       console.log("API failed to fetch more info => ", e);
     }
+  },
+  async fetchSearchDetails(searchTerm) {
+    try {
+      const response = await fetch(apiHost + '/api/deals?searchTerm=' + searchTerm);
+      const responseJson = response.json();
+      return responseJson;
+    } catch(e) {
+      console.log("API failed to fetch more info => ", e);
+    }
   }
 }
