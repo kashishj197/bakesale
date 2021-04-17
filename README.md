@@ -1,5 +1,5 @@
 # bakesale
-A data-driven react-native app
+A data-driven react-native app developed while pursuing my first react-native essential course
 
 **Frameworks and Technologies Used:**
 
