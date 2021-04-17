@@ -15,8 +15,6 @@ Use of View, Text, TouchableOpacity and other native components
 
 Search feature in an app
 
-Animation and PanResponding
-
 **To run locally**
 
 Download/Pull the master branch
